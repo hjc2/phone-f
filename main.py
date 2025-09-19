@@ -1,6 +1,10 @@
 import sqlite3
 from pprint import pprint
 
+### talked with Keith Alan Crabb about it being a sqlite3 db
+
+#
+
 # GRAB DATA FROM SETTINGS
 def get_settings():
     conn = sqlite3.connect("settings.db")
@@ -62,6 +66,10 @@ receiver = uploaded['address']
 sender = db_data['global']['device_phone_number']
 print(f"sender: {sender}")
 print(f"receiver: {receiver}")
+
+with open("colemanh_proj1_Answers.txt", "w") as f:
+    f.write(f"sender: {sender}\n")
+    f.write(f"receiver: {receiver}\n")
 
 #print time
 #print address
