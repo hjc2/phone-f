@@ -1,4 +1,5 @@
 import sqlite3
+from pprint import pprint
 
 # GRAB DATA FROM SETTINGS
 def get_settings():
@@ -15,12 +16,53 @@ def get_settings():
     conn.close()
     return db_dict
 
-def count_messages():
+def count_sms_bodies():
+    conn = sqlite3.connect("mmssms.db")
+    cursor = conn.cursor()
+    
+    # Count # of occurences for each body
+    cursor.execute(f"SELECT body, COUNT(*) as count FROM sms WHERE body IS NOT NULL AND body != '' GROUP BY body ORDER BY count DESC, body")
+    body_counts = cursor.fetchall()
+    conn.close()
 
-# Usage
+    return(body_counts)
+
+def get_upload_message_row(message):
+    conn = sqlite3.connect("mmssms.db")
+    cursor = conn.cursor()
+    
+    cursor.execute(f"SELECT * FROM sms WHERE body = '{message}'")
+    row = cursor.fetchone()
+    
+    if row:
+        # Get column names
+        cursor.execute("PRAGMA table_info(sms)")
+        columns = [col[1] for col in cursor.fetchall()]
+        
+        # Create dict of column:value pairs
+        row_dict = dict(zip(columns, row))
+        conn.close()
+        return row_dict
+
+
+
 db_data = get_settings()
-# print(db_data)
-
 print("Device Phone #")
 print(db_data['global']['device_phone_number'])
+print("Count of message body's")
+quantities = count_sms_bodies()
+print(quantities)
+rarest_message = min(quantities, key=lambda x: x[1])
+print(f"least common: {rarest_message}")
+print("\n" + ("=" * 10) + "\n")
+print(rarest_message[0])
+uploaded = get_upload_message_row(rarest_message[0])
+receiver = uploaded['address']
 
+sender = db_data['global']['device_phone_number']
+print(f"sender: {sender}")
+print(f"receiver: {receiver}")
+
+#print time
+#print address
+#export to new file
