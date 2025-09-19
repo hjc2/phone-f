@@ -3,7 +3,14 @@ from pprint import pprint
 
 ### talked with Keith Alan Crabb about it being a sqlite3 db
 
-#
+# my program works by first viewing the "settings.db" file and finding the phone number in the "device_phone_number" field
+# this is the phone number of the sender
+# the "mmssms.db" file is the db of the messages sent by the work phone
+# I search for every unique message sent by the phone, and record the quantity of messages sent
+# the message "File has been uploaded to the server" appears only once, which is quite abnormal
+# I grabbed the row and the details of the message, including the receiver
+# I suspect this is where the data leak occured
+# This also happended at roughly 3am in central time (Chicago)
 
 # GRAB DATA FROM SETTINGS
 def get_settings():
