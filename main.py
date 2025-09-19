@@ -1,8 +1,8 @@
 import sqlite3
 
-def db_to_simple_dict(db_file):
-    # GRAB DATA FROM SETTINGS
-    conn = sqlite3.connect(db_file)
+# GRAB DATA FROM SETTINGS
+def get_settings():
+    conn = sqlite3.connect("settings.db")
     cursor = conn.cursor()
 
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -15,8 +15,12 @@ def db_to_simple_dict(db_file):
     conn.close()
     return db_dict
 
-# Usage
-db_data = db_to_simple_dict("settings.db")
-print(db_data)
+def count_messages():
 
+# Usage
+db_data = get_settings()
+# print(db_data)
+
+print("Device Phone #")
 print(db_data['global']['device_phone_number'])
+
